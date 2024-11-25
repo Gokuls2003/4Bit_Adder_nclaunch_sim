@@ -53,14 +53,52 @@ Note : File name should be with HDL Extension
 
 •	fa.v → Single Bit 3-Input Full Adder [Sub-Module / Function] 
 
+module full_adder(A,B,CIN,S,COUT);
+input A,B,CIN;
+output S,COUT;
+assign S=A^B^CIN;
+assign COUT=(A&B) | (CIN&(A^B));
+endmodule
+
 •	fa_4bit.v → Top Module for Adding 4-bit Inputs. 
 
+module fulladd_4bit(A,B,C0,S,C4);
+input [3:0] A,B;
+input C0;
+output [3:0] S;
+output C4;
+wire C1,C2,C3;
+full_adder fa0 (A[0],B[0],C0,S[0],C1);
+full_adder fa1 (A[1],B[1],C1,S[1],C2);
+full_adder fa2 (A[2],B[2],C2,S[2],C3);
+full_adder fa3 (A[3],B[3],C3,S[3],C4);
+endmodule
+
 •	fa_4bit_test.v → Test bench 
+
+module test_4bit;
+reg [3:0] A;
+reg [3:0] B; reg C0;
+wire [3:0] S; wire C4;
+fulladd_4bit dut (A,B,C0,S,C4);
+initial 
+begin
+A=4'b0011;B=4'b0011;C0=1'b0;
+#10;  A=4'b1011;B=4'b0111;C0=1'b1;
+#10; A=4'b1111;B=4'b1111;C0=1'b1;
+#10;
+end initial
+#50 $finish;
+endmodule
 
 */Program to design 4 bit adder by instantiating 1 bit Full adder.also add test bench program */
 Developed by: Register Number*/
 
 ## Functional Simulation: 
+
+![Screenshot 2024-11-25 161747](https://github.com/user-attachments/assets/2ece01f5-2db6-4a73-ac58-c52400d32a08)
+
+
 
 	Invoke the cadence environment by type the below commands 
 
@@ -73,6 +111,9 @@ Developed by: Register Number*/
 	After this you can see the window like below 
 
 ### Fig 3:Invoke the Cadence Environment
+![Screenshot 2024-11-25 153202](https://github.com/user-attachments/assets/a0c2241a-8b47-474e-9b02-1fdaa9e4e002)
+
+
 
 	To Launch Simulation tool 
 
@@ -85,12 +126,16 @@ or
 	It will invoke the nclaunch window for functional simulation we can compile,elaborate and simulate it using Multiple Step .
 
 ### Fig 4:Setting Multi-step simulation
+![Screenshot 2024-11-25 153222](https://github.com/user-attachments/assets/29e49a6a-c20b-488e-8d91-cf0ee7254fef)
+
 
 	Select Multiple Step and then select “Create cds.lib File” .
 
 	Click the cds.lib file and save the file by clicking on Save option 
 
 ### Fig 5:cds.lib file Creation
+![Screenshot 2024-11-25 153257](https://github.com/user-attachments/assets/1a5ad7d8-6613-47bd-a87e-ed4cac408aa9)
+
 
 	Save cds.lib file and select the correct option for cds.lib file format based on the HDL Language and Libraries used. 
 
@@ -113,6 +158,8 @@ or
 	To perform the function simulation, the following three steps are involved Compilation, Elaboration and Simulation. 
 
 ### Fig 7: Nclaunch Window
+![Screenshot 2024-11-25 153309](https://github.com/user-attachments/assets/591f80a2-5a9e-4f1a-b7a1-4f7229d430c6)
+
 
 ## Step 1: Compilation:– Process to check the correct Verilog language syntax and usage 
 
@@ -132,6 +179,8 @@ i.e Cadence IES command for compile: ncverilog +access+rwc -compile fa.v
 Worklib is the directory where all the compiled codes are stored while Snapshot will have output of elaboration which in turn goes for simulation
 
 ### Fig 8: Compiled database in worklib
+![Screenshot 2024-11-25 153326](https://github.com/user-attachments/assets/1f70ff24-6d90-4af1-b33b-9ccfb7cc1de7)
+
 
 	After compilation it will come under worklib you can see in right side window
 
@@ -155,6 +204,8 @@ i.e Cadence IES command for compile: ncverilog +access+rwc -compile fa.v
 	After elaboration the file will come under snapshot. Select the test bench and elaborate it.
 
 ### Fig 9: Elaboration Launch Option
+![Screenshot 2024-11-25 153406](https://github.com/user-attachments/assets/b0bb70a0-85e9-4b14-ba8d-20d4c83fae55)
+
 
 ## Step 3: Simulation: – Simulate with the given test vectors over a period of time to observe the output behaviour. 
 
@@ -167,10 +218,16 @@ i.e Cadence IES command for compile: ncverilog +access+rwc -compile fa.v
 	Steps for simulation – Run the simulation command with simulator options
 
 ### Fig 10: Design Browser window for simulation
+![Screenshot 2024-11-25 153406](https://github.com/user-attachments/assets/43a9b269-db14-496a-ba14-2da1e377deb0)
+
 
 ### Fig 11: Launching Simulation Waveform WindowSimulation Waveform Window
 
+![Screenshot 2024-11-25 163231](https://github.com/user-attachments/assets/5710b1c3-fc80-4680-9729-5c7a0e9bc60d)
+
 ### Fig 12: Simulation Waveform Window
+![Screenshot 2024-11-25 163259](https://github.com/user-attachments/assets/28bd9e20-4889-4df5-81ae-eea6c7257cd1)
+
 
 ### Result:
 
